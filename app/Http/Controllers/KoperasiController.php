@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Session;
 class KoperasiController extends Controller
 {
     //
-    public function insert_koperasi_rki(Request $request, $id_tingkat)
+    public function update_koperasi_rki(Request $request, $id_koperasi)
     {
 
         DB::beginTransaction();
@@ -22,7 +22,6 @@ class KoperasiController extends Controller
                 'nama_koperasi' => 'required',
                 'singkatan_koperasi' => 'required',
                 'email' => 'required|email',
-                'username' => 'required',
                 'no_telp' => 'required',
                 'no_wa' => 'required',
                 'bidang_koperasi' => 'required',
@@ -30,6 +29,8 @@ class KoperasiController extends Controller
                 'kelurahan' => 'required',
                 'kecamatan' => 'required',
                 'kota' => 'required',
+                'pengurusData' => 'required|array',
+                'pengawasData' => 'required|array',
                 'provinsi' => 'required',
                 'kode_pos' => 'required',
                 'no_akta' => 'required',
@@ -48,6 +49,7 @@ class KoperasiController extends Controller
                 'no_pkp' => 'required',
                 'no_sertifikat' => 'required',
             ]);
+
             // Simpan logo
             $logo_base64 = $request->logo;
             $logo_extension = 'png';
@@ -57,23 +59,7 @@ class KoperasiController extends Controller
             // $logo_path = public_path().'/images' public_path($logo_folder . $logo_name);
             file_put_contents($logo_path, base64_decode($logo_base64));
 
-            // Simpan KTP Ketua
-            $ktp_ketua_base64 = $request->image_ktp_ketua;
-            $ktp_ketua_extension = 'png';
-            $ktp_ketua_name = time() . '_ktp.' . $ktp_ketua_extension;
-            $ktp_ketua_folder = '/koperasi/ktp_ketua/';
-            // $ktp_ketua_path = public_path($ktp_ketua_folder . $ktp_ketua_name);
-            $ktp_ketua_path = public_path() . $ktp_ketua_folder . $ktp_ketua_name;
-            file_put_contents($ktp_ketua_path, base64_decode($ktp_ketua_base64));
 
-            // Simpan KTP Pengawas
-            $ktp_pengawas_base64 = $request->image_ktp_pengawas;
-            $ktp_pengawas_extension = 'png';
-            $ktp_pengawas_name = time() . '_ktp.' . $ktp_pengawas_extension;
-            $ktp_pengawas_folder = '/koperasi/ktp_pengawas/';
-            // $ktp_pengawas_path = public_path($ktp_pengawas_folder . $ktp_pengawas_name);
-            $ktp_pengawas_path = public_path() . $ktp_pengawas_folder . $ktp_pengawas_name;
-            file_put_contents($ktp_pengawas_path, base64_decode($ktp_pengawas_base64));
 
             // Simpan NPWP
             $npwp_base64 = $request->image_npwp;
@@ -151,8 +137,7 @@ class KoperasiController extends Controller
 
             // URL untuk disimpan di database
             $logoUrl = $logo_folder . $logo_name;
-            $ktpPengawasUrl = $ktp_pengawas_folder . $ktp_pengawas_name;
-            $ktpKetuaUrl = $ktp_ketua_folder . $ktp_ketua_name;
+
             $npwpUrl = $npwp_folder . $npwp_name;
             $dokumenSIUPUrl = $dokumen_siup_folder . $dokumen_siup_name;
             $dokumenAktaPendirianUrl = $dokumen_akta_pendirian_folder . $dokumen_akta_pendirian_name;
@@ -166,7 +151,6 @@ class KoperasiController extends Controller
                 'nama_koperasi' => $request->nama_koperasi,
                 'singkatan_koperasi' => $request->singkatan_koperasi,
                 'email_koperasi' => $request->email,
-                'username' => $request->username,
                 'no_phone' => $request->no_telp,
                 'hp_wa' => $request->no_wa,
                 'hp_fax' => $request->no_fax,
@@ -194,10 +178,7 @@ class KoperasiController extends Controller
                 'no_pkp' => $request->no_pkp,
                 'no_sertifikat_koperasi' => $request->no_sertifikat,
                 'image_logo' => $logoUrl,
-                'image_ktp_ketua' => $ktpKetuaUrl,
-                'image_ktp_pengawas' => $ktpPengawasUrl,
                 'image_npwp' => $npwpUrl,
-                'id_tingkatan_koperasi' => $id_tingkat,
                 'doc_siup' => $dokumenSIUPUrl,
                 'doc_akta_pendirian' => $dokumenAktaPendirianUrl,
                 'doc_akta_perubahan' => $dokumenAktaPerubahanUrl,
@@ -205,33 +186,16 @@ class KoperasiController extends Controller
                 'doc_spkum' => $dokumenSPKUMUrl,
                 'doc_sk_domisili' => $dokumenSKDomisiliUrl,
                 'doc_sertifikat_koperasi' => $dokumenSertifikatUrl,
-                'slug' => $request->slug,
             ];
 
-            $koperasiId = DB::table('tbl_koperasi')->insertGetId($koperasiData);
+            $koperasiId = DB::table('tbl_koperasi')->where('id', $id_koperasi)->update($koperasiData);
             if (!$koperasiId) {
                 throw new \Exception('Gagal Tambah Koperasi!');
             }
-            $pengurusData = [
-                'nik' => $request->no_ktp_pengurus,
-                'nama_lengkap' => $request->nama_pengurus,
-                'no_anggota' => $request->no_anggota_pengurus,
-                'id_role' => $request->jabatan_pengurus,
-                'nomor_hp' => $request->no_wa_pengurus,
-                'id_koperasi' => (int)$koperasiId,
-            ];
 
-            $pengawasData = [
-                'nik' => $request->no_ktp_pengawas,
-                'nama_lengkap' => $request->nama_pengawas,
-                'no_anggota' => $request->no_anggota_pengawas,
-                'id_role' => $request->jabatan_pengawas,
-                'nomor_hp' => $request->no_wa_pengawas,
-                'id_koperasi' => (int)$koperasiId,
-            ];
 
-            $pengurus = DB::table('tbl_anggota')->insert($pengurusData);
-            $pengawas = DB::table('tbl_anggota')->insert($pengawasData);
+            $pengurus = DB::table('tbl_pengurus')->insert($request->pengurusData);
+            $pengawas = DB::table('tbl_pengawas')->insert($request->pengawasData);
 
             if (!$pengurus || !$pengawas) {
                 throw new \Exception('Gagal Tambah Anggota!');
@@ -577,7 +541,7 @@ class KoperasiController extends Controller
         $id_primkop = Session::get('id_primkop');
         $list_inkop =  DB::table('tbl_koperasi')->where('id_tingkatan_koperasi', '=', 1)->get();
         return view('dashboard.data.koperasi.inkop.index', compact('id', 'username', 'password', 'tingkatan', 'list_inkop'));
-        
+
     }
 
     public function list_puskop(){
@@ -595,7 +559,7 @@ class KoperasiController extends Controller
             $puskop = DB::table('tbl_koperasi')->where('id_inkop',  $id)->get();
         }
         return view('dashboard.data.koperasi.puskop.index', compact('id', 'username', 'password', 'tingkatan', 'puskop'));
-        
+
     }
 
     public function list_puskop_inkop(String $id){
@@ -647,7 +611,7 @@ class KoperasiController extends Controller
             $primkop = DB::table('tbl_koperasi')->where('id_puskop', $id)->get();
         }
         return view('dashboard.data.koperasi.primkop.index', compact('id', 'username', 'password', 'tingkatan', 'primkop'));
-    } 
+    }
 
     public function primkop()
     {
@@ -728,7 +692,7 @@ class KoperasiController extends Controller
     public function insert_simpanan(Request $request){
 
         DB::beginTransaction();
-    
+
             try {
                 $request->validate([
                     'simpanan_pokok' => 'required',
@@ -739,7 +703,7 @@ class KoperasiController extends Controller
                     'keterangan' => 'required',
                     'tanggal_simpanan' => 'required'
                 ]);
-    
+
                 $simpananData = [
                     'simpanan_pokok' => $request->simpanan_pokok,
                     'id_koperasi' => $request->id_koperasi,

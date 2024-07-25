@@ -26,12 +26,14 @@
                                 <h3 class="main_question">
                                     <strong>1 of 11</strong>Data Koperasi
                                 </h3>
+                                <p class="text-white">NIS Koperasi : {{ $nis }}</p>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="nama_koperasi">Nama Koperasi</label>
                                             <input type="text" name="nama_koperasi" id="nama_koperasi"
-                                                class="form-control" placeholder="Masukan Nama Koperasi" required />
+                                                value="{{ $koperasi->nama_koperasi }}" class="form-control"
+                                                placeholder="Masukan Nama Koperasi" required disabled />
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
@@ -47,7 +49,7 @@
                                         <div class="form-group">
                                             <label for="email">Email Koperasi</label>
                                             <input type="email" name="email" id="email" class="form-control"
-                                                placeholder="Masukan Nama Lengkap" required />
+                                                placeholder="Masukan Nama Lengkap" />
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
@@ -168,37 +170,12 @@
 
                             <div class="step">
                                 <h3 class="main_question">
-                                    <strong>3 of 11</strong>Ketua Koperasi
+                                    <strong>3 of 11</strong>Nama Pengurus
                                 </h3>
 
-                                <div class="form-group">
-                                    <label for="nama_pengurus">Nama Ketua</label>
-                                    <input type="text" name="nama_pengurus" id="nama_pengurus" class="form-control"
-                                        placeholder="Masukan nama_pengurus" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="no_ktp_pengurus">No KTP Ketua</label>
-                                    <input type="text" name="no_ktp_pengurus" id="no_ktp_pengurus"
-                                        class="form-control" placeholder="Masukan no_ktp_pengurus" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="no_anggota_pengurus">No Anggota Ketua</label>
-                                    <input type="text" name="no_anggota_pengurus" id="no_anggota_pengurus"
-                                        class="form-control" placeholder="Masukan no_anggota" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="no_wa_pengurus">No Wa Ketua</label>
-                                    <input type="text" name="no_wa_pengurus" id="no_wa_pengurus" class="form-control"
-                                        placeholder="Masukan no_wa_pengurus" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="foto_ktp_ketua">Upload KTP Ketua<span style="color: red;">*</span></label>
-                                    <input type="file" class="form-control" id="foto_ktp_ketua" name="foto_ktp_ketua"
-                                        required />
-                                    <img id="preview-ktp-ketua" height="100" width="100" class="mt-1"
-                                        src="/assets/images/default.jpg" alt="Preview Image">
+                                <button onclick="tambahPengurusBtn()" class="btn btn-success mb-3">Tambah Data</button>
+                                <div id="pengurusList">
+                                    <!-- Daftar Pengurus yang Ditambahkan akan muncul di sini -->
                                 </div>
                                 {{--
                                 <div class="form-group">
@@ -216,22 +193,9 @@
                                     <strong>4 of 11</strong>Pengawas Koperasi
                                 </h3>
 
-                                <div class="form-group">
-                                    <label for="nama_pengawas">Nama Pengawas</label>
-                                    <input type="text" name="nama_pengawas" id="nama_pengawas" class="form-control"
-                                        placeholder="Masukan Nama Pengawas"@required(true) />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="no_ktp_pengawas">No KTP Pengawas</label>
-                                    <input type="text" name="no_ktp_pengawas" id="no_ktp_pengawas"
-                                        class="form-control" placeholder="Masukan no_ktp_pengawas" required />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="no_anggota_pengawas">No Anggota Pengawas</label>
-                                    <input type="text" name="no_anggota_pengawas" id="no_anggota_pengawas"
-                                        class="form-control" placeholder="Masukan Nomor Anggota" required />
+                                <button onclick="tambahPengawasBtn()" class="btn btn-success mb-3">Tambah Data</button>
+                                <div id="pengawasList">
+                                    <!-- Daftar Pengawas yang Ditambahkan akan muncul di sini -->
                                 </div>
                                 {{--
                                 <div class="form-group">
@@ -239,20 +203,6 @@
                                     <input type="text" name="jabatan_pengawas" id="jabatan_pengawas" value="3"
                                         class="form-control" placeholder="Masukan Jabatan" hidden />
                                 </div> --}}
-
-                                <div class="form-group">
-                                    <label for="no_wa_pengawas">No Wa Pengawas</label>
-                                    <input type="text" name="no_wa_pengawas" id="no_wa_pengawas" class="form-control"
-                                        placeholder="Masukan Nomor WA" required />
-                                </div>
-                                <div class="form-group">
-                                    <label for="foto_ktp_pengawas">Upload KTP Pengawas<span
-                                            style="color: red;">*</span></label>
-                                    <input type="file" class="form-control" id="foto_ktp_pengawas"
-                                        name="foto_ktp_pengawas" required />
-                                    <img id="preview-ktp-pengawas" height="100" width="100" class="mt-1"
-                                        src="/assets/images/default.jpg" alt="Preview Image">
-                                </div>
                             </div>
                             <!-- /step 4-->
 
@@ -286,23 +236,23 @@
 
                                 <!-- /row -->
                                 <!-- <div class="form-group terms">
-                                                    <label class="container_check"
-                                                    >Please accept our
-                                                    <a
-                                                        href="#"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#terms-txt"
-                                                        style="color: #fff; text-decoration: underline"
-                                                        >Terms and conditions</a
-                                                    >
-                                                    <input
-                                                        type="checkbox"
-                                                        name="terms"
-                                                        value="Yes"
-                                                        class="required" />
-                                                    <span class="checkmark"></span>
-                                                    </label>
-                                                </div> -->
+                                                                        <label class="container_check"
+                                                                        >Please accept our
+                                                                        <a
+                                                                            href="#"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#terms-txt"
+                                                                            style="color: #fff; text-decoration: underline"
+                                                                            >Terms and conditions</a
+                                                                        >
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            name="terms"
+                                                                            value="Yes"
+                                                                            class="required" />
+                                                                        <span class="checkmark"></span>
+                                                                        </label>
+                                                                    </div> -->
                             </div>
                             <!-- /step 5-->
 
@@ -523,6 +473,8 @@
     <script src="{{ asset('assets/js/function.js') }}"></script>
     <script>
         let baseStringKtpKetua;
+        let pengurusData = @json($pengurus);
+        let pengawasData = [];
         let baseStringKtpPengawas;
         let baseStringLogo;
         let baseStringNpwp;
@@ -541,9 +493,9 @@
         let tingkatan_koperasi;
         let koperasi;
         let id_koperasi;
-        const ktpKetuaInput = document.getElementById('foto_ktp_ketua');
+        // const ktpKetuaInput = document.getElementById('foto_ktp_ketua');
         const npwpInput = document.getElementById('foto_npwp');
-        const ktpPengawasInput = document.getElementById('foto_ktp_pengawas');
+        // const ktpPengawasInput = document.getElementById('foto_ktp_pengawas');
         const logoInput = document.getElementById('foto_logo');
         const documentSKK = document.getElementById('doc_sk_kemenkumham');
         const documentAktaPendirian = document.getElementById('doc_akta_pendirian');
@@ -557,62 +509,301 @@
         const previewLogo = document.getElementById('preview-logo');
         const previewNpwp = document.getElementById('preview-npwp');
 
+        function renderPengurusList() {
+            const pengurusList = document.getElementById('pengurusList');
+            pengurusList.innerHTML = '';
+            pengurusData.forEach((pengurus, index) => {
+                console.log(index)
+                const pengurusCard = document.createElement('div');
+                pengurusCard.className = 'card pengurus-card';
+                pengurusCard.innerHTML = `
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-6">
+                                    <h5 class="card-title">${pengurus.nama_pengurus}</h5>
+                                    <p class="text-dark">${pengurus.jabatan}</p>
+                                    <p class="text-dark">${pengurus.nomor_hp}</p>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-warning btn-sm" onclick="editPengurus(${index})" ${index < 1 ? 'hidden' : ''}>Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deletePengurus(${index})" ${index < 1 ? 'hidden' : ''}>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                pengurusList.appendChild(pengurusCard);
+            });
+        }
+
+        function tambahPengurusBtn() {
+            swal({
+                title: "Tambah Pengurus",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                                <input id="swal-input1" class="swal-content__input" placeholder="Nama Pengurus">
+                                <input id="swal-input2" class="swal-content__input" placeholder="Jabatan">
+                                <input id="swal-input3" class="swal-content__input" placeholder="Nomor Telepon">
+                            `
+                    },
+                },
+                buttons: {
+                    cancel: true,
+                    confirm: {
+                        text: "Tambah",
+                        closeModal: false,
+                    }
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    const nama_pengurus = document.getElementById('swal-input1').value;
+                    const jabatan = document.getElementById('swal-input2').value;
+                    const nomor_hp = document.getElementById('swal-input3').value;
+
+                    if (!nama_pengurus || !jabatan || !nomor_hp) {
+                        swal.showValidationError('Semua bidang harus diisi');
+                        return false;
+                    }
+
+                    pengurusData.push({
+                        nama_pengurus,
+                        jabatan,
+                        nomor_hp,
+                        id_koperasi: {{ $koperasi->id }}
+                    });
+                    renderPengurusList();
+                    console.log(pengurusData)
+
+                    swal.close();
+                }
+            });
+        }
+
+        function editPengurus(index) {
+            const pengurus = pengurusData[index];
+            swal({
+                title: "Edit Pengurus",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                                <input id="swal-input1" class="swal-content__input" value="${pengurus.nama_pengurus}" placeholder="Nama Pengurus">
+                                <input id="swal-input2" class="swal-content__input" value="${pengurus.jabatan}" placeholder="Jabatan">
+                                <input id="swal-input3" class="swal-content__input" value="${pengurus.nomor_hp}" placeholder="Nomor Telepon">
+                            `
+                    },
+                },
+                buttons: {
+                    cancel: true,
+                    confirm: {
+                        text: "Update",
+                        closeModal: false,
+                    }
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    const nama_pengurus = document.getElementById('swal-input1').value;
+                    const jabatan = document.getElementById('swal-input2').value;
+                    const nomor_hp = document.getElementById('swal-input3').value;
+
+                    if (!nama_pengurus || !jabatan || !nomor_hp) {
+                        swal.showValidationError('Semua bidang harus diisi');
+                        return false;
+                    }
+
+                    pengurusData[index] = {
+                        nama_pengurus,
+                        jabatan,
+                        nomor_hp,
+                        id_koperasi: {{ $koperasi->id }}
+                    };
+                    renderPengurusList();
+                    swal.close();
+                }
+            });
+        }
+
+        function deletePengurus(index) {
+            pengurusData.splice(index, 1);
+            renderPengurusList();
+        }
+
+        function renderPengawasList() {
+            const pengawasList = document.getElementById('pengawasList');
+            pengawasList.innerHTML = '';
+            pengawasData.forEach((pengawas, index) => {
+                const pengawasCard = document.createElement('div');
+                pengawasCard.className = 'card pengawas-card';
+                pengawasCard.innerHTML = `
+                <div class="card">
+                    <div class="card-body row">
+                        <div class="col-6">
+                            <h5 class="card-title">${pengawas.nama_pengawas}</h5>
+                            <p class="text-dark">${pengawas.jabatan}</p>
+                            <p class="text-dark">${pengawas.nomor_hp}</p>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-warning btn-sm" onclick="editPengawas(${index})" >Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deletePengawas(${index})">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+                pengawasList.appendChild(pengawasCard);
+            });
+        }
+
+        function tambahPengawasBtn() {
+            swal({
+                title: "Tambah Pengawas",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                        <input id="swal-input1" class="swal-content__input" placeholder="Nama Pengawas">
+                        <input id="swal-input2" class="swal-content__input" placeholder="Jabatan">
+                        <input id="swal-input3" class="swal-content__input" placeholder="Nomor Telepon">
+                    `
+                    },
+                },
+                buttons: {
+                    cancel: true,
+                    confirm: {
+                        text: "Tambah",
+                        closeModal: false,
+                    }
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    const nama_pengawas = document.getElementById('swal-input1').value;
+                    const jabatan = document.getElementById('swal-input2').value;
+                    const nomor_hp = document.getElementById('swal-input3').value;
+
+                    if (!nama_pengawas || !jabatan || !nomor_hp) {
+                        swal.showValidationError('Semua bidang harus diisi');
+                        return false;
+                    }
+
+                    pengawasData.push({
+                        nama_pengawas,
+                        jabatan,
+                        nomor_hp,
+                        id_koperasi: {{ $koperasi->id }}
+                    });
+                    renderPengawasList();
+                    swal.close();
+                }
+            });
+        }
+
+        function editPengawas(index) {
+            const pengawas = pengawasData[index];
+            swal({
+                title: "Edit Pengawas",
+                content: {
+                    element: "div",
+                    attributes: {
+                        innerHTML: `
+                        <input id="swal-input1" class="swal-content__input" value="${pengawas.nama_pengawas}" placeholder="Nama Pengawas">
+                        <input id="swal-input2" class="swal-content__input" value="${pengawas.jabatan}" placeholder="Jabatan">
+                        <input id="swal-input3" class="swal-content__input" value="${pengawas.nomor_hp}" placeholder="Nomor Telepon">
+                    `
+                    },
+                },
+                buttons: {
+                    cancel: true,
+                    confirm: {
+                        text: "Update",
+                        closeModal: false,
+                    }
+                },
+            }).then((isConfirm) => {
+                if (isConfirm) {
+                    const nama_pengawas = document.getElementById('swal-input1').value;
+                    const jabatan = document.getElementById('swal-input2').value;
+                    const nomor_hp = document.getElementById('swal-input3').value;
+
+                    if (!nama_pengawas || !jabatan || !nomor_hp) {
+                        swal.showValidationError('Semua bidang harus diisi');
+                        return false;
+                    }
+
+                    pengawasData[index] = {
+                        nama_pengawas,
+                        jabatan,
+                        nomor_hp
+                    };
+                    renderPengawasList();
+                    swal.close();
+                }
+            });
+        }
+
+        function deletePengawas(index) {
+            pengawasData.splice(index, 1);
+            renderPengawasList();
+        }
+        // window.editPengurus = editPengurus;
+        // window.deletePengurus = deletePengurus;
 
         window.addEventListener("load", () => {
             getProvince();
             const url = new URL(window.location.href);
             const path = url.pathname.split('/');
-            document.getElementById("tingkatan_koperasi").innerText = path[3];
-            tingkatan_koperasi = path[3];
+            id_koperasi = {{ $koperasi->id }}
+            renderPengurusList();
+            // document.getElementById("tingkatan_koperasi").innerText = path[3];
+            // tingkatan_koperasi = path[3];
 
-            if (tingkatan_koperasi == 'inkop') {
-                id_koperasi = 1;
-                document.getElementById("message_tingkatan").innerText =
-                    "Bersama Induk Koperasi, kita wujudkan ekonomi mandiri yang kokoh dan berkelanjutan! Kami berkomitmen untuk mengoordinasikan dan mengawasi koperasi di seluruh jaringan kami, memastikan setiap anggota mendapatkan manfaat maksimal dan berkontribusi pada pertumbuhan ekonomi bersama. Bergabunglah dengan kami untuk masa depan yang lebih stabil dan makmur.";
-            } else if (tingkatan_koperasi == 'puskop') {
-                id_koperasi = 2;
-                document.getElementById("message_tingkatan").innerText =
-                    "Menghubungkan dan memperkuat jaringan koperasi demi kesejahteraan bersama! Kami adalah jembatan antara Induk Koperasi dan Koperasi Primer, bekerja untuk menyelaraskan tujuan dan menyediakan dukungan yang dibutuhkan. Bersama, kita dapat mencapai kesejahteraan kolektif melalui kolaborasi yang solid dan berkesinambungan.";
-            } else if (tingkatan_koperasi == 'primkop') {
-                id_koperasi = 3;
-                document.getElementById("message_tingkatan").innerText =
-                    "Solusi ekonomi berbasis kebersamaan, untuk masa depan yang lebih cerah! Kami berdiri untuk melayani kebutuhan anggota kami, menyediakan solusi ekonomi yang efektif dan berbasis komunitas. Dengan menjadi anggota, Anda tidak hanya memperoleh manfaat langsung tetapi juga berkontribusi pada pembangunan ekonomi yang inklusif dan berkelanjutan.";
-            } else {
-                document.getElementById("message_tingkatan").innerText =
-                    "Jadilah bagian dari perubahan! Bergabunglah dengan koperasi kami dan nikmati manfaatnya! Sebagai anggota, Anda akan mendapatkan akses ke berbagai layanan dan dukungan yang dirancang untuk meningkatkan kesejahteraan Anda. Mari kita bersama-sama membangun komunitas yang lebih kuat dan ekonomi yang lebih adil.";
-            }
+            // if (tingkatan_koperasi == 'inkop') {
+            //     id_koperasi = 1;
+            //     document.getElementById("message_tingkatan").innerText =
+            //         "Bersama Induk Koperasi, kita wujudkan ekonomi mandiri yang kokoh dan berkelanjutan! Kami berkomitmen untuk mengoordinasikan dan mengawasi koperasi di seluruh jaringan kami, memastikan setiap anggota mendapatkan manfaat maksimal dan berkontribusi pada pertumbuhan ekonomi bersama. Bergabunglah dengan kami untuk masa depan yang lebih stabil dan makmur.";
+            // } else if (tingkatan_koperasi == 'puskop') {
+            //     id_koperasi = 2;
+            //     document.getElementById("message_tingkatan").innerText =
+            //         "Menghubungkan dan memperkuat jaringan koperasi demi kesejahteraan bersama! Kami adalah jembatan antara Induk Koperasi dan Koperasi Primer, bekerja untuk menyelaraskan tujuan dan menyediakan dukungan yang dibutuhkan. Bersama, kita dapat mencapai kesejahteraan kolektif melalui kolaborasi yang solid dan berkesinambungan.";
+            // } else if (tingkatan_koperasi == 'primkop') {
+            //     id_koperasi = 3;
+            //     document.getElementById("message_tingkatan").innerText =
+            //         "Solusi ekonomi berbasis kebersamaan, untuk masa depan yang lebih cerah! Kami berdiri untuk melayani kebutuhan anggota kami, menyediakan solusi ekonomi yang efektif dan berbasis komunitas. Dengan menjadi anggota, Anda tidak hanya memperoleh manfaat langsung tetapi juga berkontribusi pada pembangunan ekonomi yang inklusif dan berkelanjutan.";
+            // } else {
+            //     document.getElementById("message_tingkatan").innerText =
+            //         "Jadilah bagian dari perubahan! Bergabunglah dengan koperasi kami dan nikmati manfaatnya! Sebagai anggota, Anda akan mendapatkan akses ke berbagai layanan dan dukungan yang dirancang untuk meningkatkan kesejahteraan Anda. Mari kita bersama-sama membangun komunitas yang lebih kuat dan ekonomi yang lebih adil.";
+            // }
 
-            koperasi = path[2]
-            console.log(path);
-            if (path[2] !== 'rki') {
-                document.getElementById("koperasi").innerText = 'Koperasi ' + koperasi;
-            }
+            // // koperasi = path[2]
+            // console.log(path);
+            // if (path[2] !== 'rki') {
+            //     document.getElementById("koperasi").innerText = 'Koperasi ' + koperasi;
+            // }
         });
 
-        ktpKetuaInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewKtpKetua.src = e.target.result;
-                    baseStringKtpKetua = e.target.result;
-                    type1 = file.type.split('/')[1];
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-        ktpPengawasInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewKtpPengawas.src = e.target.result;
-                    baseStringKtpPengawas = e.target.result;
-                    type2 = file.type.split('/')[1];
-                }
-                reader.readAsDataURL(file);
-            }
-        });
+        // ktpKetuaInput.addEventListener('change', (event) => {
+        //     const file = event.target.files[0];
+        //     if (file) {
+        //         const reader = new FileReader();
+        //         reader.onload = (e) => {
+        //             previewKtpKetua.src = e.target.result;
+        //             baseStringKtpKetua = e.target.result;
+        //             type1 = file.type.split('/')[1];
+        //         }
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
+        // ktpPengawasInput.addEventListener('change', (event) => {
+        //     const file = event.target.files[0];
+        //     if (file) {
+        //         const reader = new FileReader();
+        //         reader.onload = (e) => {
+        //             previewKtpPengawas.src = e.target.result;
+        //             baseStringKtpPengawas = e.target.result;
+        //             type2 = file.type.split('/')[1];
+        //         }
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
         logoInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
@@ -718,6 +909,8 @@
             }
         });
 
+
+
         async function saveData() {
             const nama_koperasi = document.getElementById("nama_koperasi").value;
             const singkatan_koperasi = document.getElementById("singkatan_koperasi").value;
@@ -733,16 +926,6 @@
             const kota = document.getElementById("kota").value;
             const provinsi = document.getElementById("provinsi").value;
             const kode_pos = document.getElementById("kode_pos").value;
-            const no_ktp_pengurus = document.getElementById("no_ktp_pengurus").value;
-            const nama_pengurus = document.getElementById("nama_pengurus").value;
-            const no_anggota_pengurus = document.getElementById("no_anggota_pengurus").value;
-            const jabatan_pengurus = 1;
-            const no_wa_pengurus = document.getElementById("no_wa_pengurus").value;
-            const no_ktp_pengawas = document.getElementById("no_ktp_pengawas").value;
-            const nama_pengawas = document.getElementById("nama_pengawas").value;
-            const no_anggota_pengawas = document.getElementById("no_anggota_pengawas").value;
-            const jabatan_pengawas = 3;
-            const no_wa_pengawas = document.getElementById("no_wa_pengawas").value;
             const no_akta = document.getElementById("no_akta").value;
             const tanggal_akta = document.getElementById("tanggal_akta").value;
             const no_skk = document.getElementById("no_skk").value;
@@ -758,8 +941,7 @@
             const no_npwp = document.getElementById("no_npwp").value;
             const no_pkp = document.getElementById("no_pkp").value;
             const no_sertifikat = document.getElementById("no_sertifikat").value;
-            const image_ktp_ketua = baseStringKtpKetua;
-            const image_ktp_pengawas = baseStringKtpPengawas;
+
             const image_logo = baseStringLogo;
             const image_npwp = baseStringNpwp;
             const doc_sk_kemenkumham = baseStringDokumenSKK;
@@ -769,12 +951,7 @@
             const doc_akta_pendirian = baseStringDokumenAktaPendirian;
             const doc_akta_perubahan = baseStringDokumenAktaPerubahan;
             const doc_sertifikat_koperasi = baseStringDokumenSertifikat;
-            const slug = createSlug(singkatan_koperasi);
-            const validKtpKetua = ktpKetuaInput.files[0];
-            const validKtpPengawas = ktpPengawasInput.files[0];
             const validLogo = logoInput.files[0];
-            // const validDokumen = dokumenInput.files[0];
-            const username = createUsername(singkatan_koperasi)
             var validSKK = document.getElementById("doc_sk_kemenkumham").files[0];
             var validSKDU = document.getElementById("doc_skdu").files[0];
             var validSIUP = document.getElementById("doc_siup").files[0];
@@ -782,7 +959,7 @@
             var validSPKK = document.getElementById("doc_spkk").files[0];
             var validAktaPendirian = document.getElementById("doc_akta_pendirian").files[0];
             var validAktaPerubahan = document.getElementById("doc_akta_perubahan").files[0];
-            if (!validKtpKetua || !validKtpPengawas || !validLogo || !validAktaPendirian || !validAktaPerubahan || !
+            if (!validLogo || !validAktaPendirian || !validAktaPerubahan || !
                 validSIUP || !validSKDU || !validSKK || !validSPKK || !validSertifikat || provinsi == '00' || kota ==
                 '00' || kecamatan == '00' || kelurahan == '00') {
                 swal({
@@ -794,19 +971,20 @@
                 return false;
             }
             // Show loading dialog
-            swal({
-                title: "Please wait",
-                text: "Submitting data...",
-                // icon: "/assets/images/loading.gif",
-                button: false,
-                closeOnClickOutside: false,
-                closeOnEsc: false,
-                className: "swal-loading",
-            });
+            // swal({
+            //     title: "Please wait",
+            //     text: "Submitting data...",
+            //     // icon: "/assets/images/loading.gif",
+            //     button: false,
+            //     closeOnClickOutside: false,
+            //     closeOnEsc: false,
+            //     className: "swal-loading",
+            // });
             const jsondata = {
                 singkatan_koperasi,
                 nama_koperasi,
-                slug,
+                pengurusData: pengurusData.slice(1),
+                pengawasData,
                 email,
                 no_telp,
                 no_wa,
@@ -819,17 +997,6 @@
                 kota,
                 provinsi,
                 kode_pos,
-                username,
-                no_ktp_pengurus,
-                nama_pengurus,
-                no_anggota_pengurus,
-                jabatan_pengurus,
-                no_wa_pengurus,
-                no_ktp_pengawas,
-                nama_pengawas,
-                no_anggota_pengawas,
-                jabatan_pengawas,
-                no_wa_pengawas,
                 no_akta,
                 tanggal_akta,
                 no_skk,
@@ -845,8 +1012,6 @@
                 no_npwp,
                 no_pkp,
                 no_sertifikat,
-                image_ktp_ketua: image_ktp_ketua?.split(",")[1],
-                image_ktp_pengawas: image_ktp_pengawas?.split(",")[1],
                 doc_sk_kemenkumham,
                 doc_spkum,
                 doc_siup,
@@ -861,8 +1026,9 @@
                 type3,
                 type4,
             };
+            console.log(jsondata)
 
-            await fetch(`/api/register/rki/insert-koperasi/${id_koperasi}`, {
+            await fetch(`/api/register/rki/update-koperasi/${id_koperasi}`, {
                     headers: {
                         'Access-Control-Allow-Origin': '*',
                         'Content-Type': 'application/json'
@@ -882,7 +1048,7 @@
                             buttons: true,
                         }).then((willOut) => {
                             if (willOut) {
-                                window.location.href = "/koperasi/rki/" + tingkatan_koperasi;
+                                window.location.href = "/";
                             } else {
                                 console.log("error");
                             }

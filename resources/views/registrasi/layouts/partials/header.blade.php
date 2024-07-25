@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-5">
-            <a href="{{ route('pendaftaran.koperasi',['nis' => request()->route('nis')])}}">
+            <a href="{{ route('pendaftaran.koperasi',['nis' => request()->route('nis'),'slug' => request()->route('slug')])}}">
                 <img src="{{ asset('assets/img/rki_icon.png') }}" alt="" width="130" />
             </a>
             {{-- @if (Route::currentRouteName() == 'anggota.primkop')

@@ -302,15 +302,14 @@ if (config('app.env') === 'production') {
     })->name('anggota.primkop');
 
     // Routing registrasi koperasi melalui RKI
-    Route::get('/pendaftaran/koperasi/{nis}', function ($nis) {
-        // $tingkat_koperasi = DB::table('tbl_tingkat_koperasi')->where('nama_tingkatan', $tingkat)->get();
-        // if ($tingkat_koperasi->isEmpty()) {
-        //     return view('error');
-        // } else {
-            // return view('registrasi.registrasi-koperasi-rki', ['tingkat' => $tingkat]);
-            return view('registrasi.registrasi-koperasi-rki', compact('nis'));
+    Route::get('/pendaftaran/koperasi/{slug}/{nis}', function ($slug, $nis) {
 
-        // }
+        $koperasi = DB::table('tbl_koperasi')->where('slug', $slug)->where('nis', $nis)->where('approval', 0)->first();
+        $pengurus = DB::table('tbl_pengurus')->where('id_koperasi',$koperasi->id)->get();
+        if(!$koperasi){
+            return view('error');
+        }
+        return view('registrasi.registrasi-koperasi-rki', compact('nis', 'slug','koperasi', 'pengurus'));
     })->name('pendaftaran.koperasi');
 
     // Routing registrasi koperasi melalui koperasi diatasnya
