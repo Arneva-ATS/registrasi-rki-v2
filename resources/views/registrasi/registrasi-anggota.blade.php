@@ -1,4 +1,4 @@
-@extends('registrasi.layouts.app')
+@extends('registrasi.layouts-2.app')
 
 @section('content')
     <div class="container">
@@ -6,7 +6,6 @@
             <div class="col-xl-6 col-lg-6 d-flex align-items-center">
                 <div class="main_title_1">
                     <h3>REGISTRASI ANGGOTA</h3>
-                    <h2 class="text-white my-5">{{ $nama_koperasi }}</h2>
                     <p>
                         Jadilah bagian dari perubahan! Bergabunglah dengan koperasi
                         kami dan nikmati manfaatnya! Sebagai anggota, Anda akan
@@ -31,7 +30,17 @@
                         <div id="middle-wizard">
                             <div class="step">
                                 <h3 class="main_question">
-                                    <strong>1 of 4</strong>Data Pribadi
+                                    <strong>1 of 5</strong>Data Koperasi
+                                </h3>
+                                    <div class="form-group">
+                                            <label for="nis">Masukan NIS</label>
+                                            <input type="text" name="nis" id="nis" class="form-control"
+                                                placeholder="Masukan NIS" required />
+                                    </div>                                  
+                            </div>
+                            <div class="step">
+                                <h3 class="main_question">
+                                    <strong>2 of 5</strong>Data Pribadi
                                 </h3>
 
                                 <div class="row">
@@ -98,7 +107,7 @@
 
                             <div class="step">
                                 <h3 class="main_question mb-4">
-                                    <strong>2 of 4</strong>Data Pribadi
+                                    <strong>3 of 5</strong>Data Pribadi
                                 </h3>
 
                                 <div class="row">
@@ -165,7 +174,7 @@
 
                             <div class="step">
                                 <h3 class="main_question">
-                                    <strong>3 of 4</strong>Data Pribadi
+                                    <strong>4 of 5</strong>Data Pribadi
                                 </h3>
 
                                 <div class="row">
@@ -234,7 +243,7 @@
 
                             <div class="submit step">
                                 <h3 class="main_question">
-                                    <strong>4 of 4</strong>Data Pribadi
+                                    <strong>5 of 5</strong>Data Pribadi
                                 </h3>
 
                                 <div class="form-group">
@@ -264,7 +273,7 @@
                             <button type="button" name="backward" class="backward">
                                 Kembali
                             </button>
-                            <button type="button" name="forward" class="forward" onclick="validateStep()">
+                            <button type="button" name="forward" class="forward" onclick="validateStep()" hidden>
                                 Selanjutnya
                             </button>
                             <button type="button" name="process" id="button-submit" class="submit"
@@ -286,15 +295,32 @@
         let baseStringKtp;
         let type1;
         let type2;
-        let slug_url;
-        let roles;
+        let id_koperasi;
 
         window.addEventListener("load", () => {
-            const url = new URL(window.location.href);
-            const path = url.pathname.split("/");
-            roles = path[2];
-            slug_url = path[3];
             getProvince();
+        });
+        document.getElementById('nis').addEventListener('change', function() {
+            const nis = this.value;
+            if (nis) {
+                fetch(`/api/anggota/verifikasi-nis/${nis}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.response_code !== '00') {
+                            alert(data.response_message);
+                        } else {
+                            document.getElementById('nama_lengkap').value = data.response_message.nama_lengkap;
+                            document.getElementById("no_anggota").value = data.response_message.no_anggota;
+                            document.getElementById("nomor_hp").value = data.response_message.nomor_hp;
+                            // Enable next step
+                            document.querySelector('button[name="forward"]').hidden = false;
+                            document.getElementById('nis').disabled = true;
+                            id_koperasi = data.response_message.id_koperasi
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
         });
 
         function convertBase64selfie() {
@@ -319,6 +345,7 @@
 
         function saveData() {
             var no_anggota = document.getElementById("no_anggota").value;
+            var nis = document.getElementById("nis").value;
             var nik = document.getElementById("nik").value;
             var nama_lengkap = document.getElementById("nama_lengkap").value;
             var tempat_lahir = document.getElementById("tempat_lahir").value;
@@ -336,13 +363,10 @@
             var alamat = document.getElementById("alamat").value;
             var nomor_hp = document.getElementById("nomor_hp").value;
             var email = document.getElementById("email").value;
-            var koperasi_name = document.getElementById("koperasi_name").value;
             var image_selfie = baseStringSelfie;
             var image_ktp = baseStringKtp;
             var validselfie = document.getElementById("selfie").files[0];
             var validktp = document.getElementById("ktp").files[0];
-            const username = createUsername(nama_lengkap);
-
             if ( validselfie == "" || validktp == "" || provinsi == '00' || kota == '00' || kecamatan =='00' || kelurahan == '00') {
                 swal({
                     title: "Perhatian!",
@@ -362,9 +386,8 @@
                 className: "swal-loading",
             });
             var jsondata = {
-                slug_url,
                 no_anggota,
-                username,
+                nis,
                 nik: nik,
                 nama_lengkap: nama_lengkap,
                 tempat_lahir: tempat_lahir,
@@ -384,14 +407,12 @@
                 email: email,
                 selfie: image_selfie?.split(",")[1],
                 ktp: image_ktp?.split(",")[1],
-                koperasi_name: koperasi_name,
                 type1: type1,
                 type2: type2,
-                id_role: 2,
-                id_koperasi: {{ $id_koperasi }},
+                id_koperasi: id_koperasi,
             };
 
-            fetch("/api/register/anggota/insert-anggota", {
+            fetch("/api/register/anggota/update-insert-anggota", {
                     headers: {
                         "Access-Control-Allow-Origin": "*",
                         "Content-Type": "application/json",

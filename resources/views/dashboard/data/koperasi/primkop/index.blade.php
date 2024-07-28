@@ -18,9 +18,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Koperasi</th>
-                            <th>No Wa</th>
-                            <th>Email</th>
-                            <th>Bidang Usaha</th>
+                            <th>Username</th>
+                            <th>nis</th>
                             <th class="no-content">Action</th>
                         </tr>
                     </thead>
@@ -29,9 +28,8 @@
                             <tr>
                                 <td>#{{ $data->id }}</td>
                                 <td>{{ $data->nama_koperasi }}</td>
-                                <td>{{ $data->hp_wa }}</td>
-                                <td>{{ $data->email_koperasi }}</td>
-                                <td>{{ $data->bidang_koperasi }}</td>
+                                <td>{{ $data->username }}</td>
+                                <td>{{ $data->nis }}</td>
                                 <td>
                                     @if ($data->approval)
                                         <button type="button" class="btn btn-warning"

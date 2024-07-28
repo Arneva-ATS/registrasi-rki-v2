@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jul 2024 pada 11.45
+-- Waktu pembuatan: 28 Jul 2024 pada 21.47
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.1.25
 
@@ -52,7 +52,7 @@ CREATE TABLE `tbl_anggota` (
   `password` varchar(255) DEFAULT NULL,
   `selfie` varchar(255) DEFAULT NULL,
   `ktp` varchar(255) DEFAULT NULL,
-  `id_role` int(11) DEFAULT NULL,
+  `jabatan` varchar(30) DEFAULT NULL,
   `approval` tinyint(1) DEFAULT 0,
   `id_koperasi` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -63,10 +63,11 @@ CREATE TABLE `tbl_anggota` (
 -- Dumping data untuk tabel `tbl_anggota`
 --
 
-INSERT INTO `tbl_anggota` (`id`, `no_anggota`, `nis`, `nik`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `id_kelurahan`, `id_kecamatan`, `id_kota`, `id_provinsi`, `kode_pos`, `agama`, `status_pernikahan`, `pekerjaan`, `kewarganegaraan`, `alamat`, `nomor_hp`, `email`, `username`, `password`, `selfie`, `ktp`, `id_role`, `approval`, `id_koperasi`, `created_at`, `updated_at`) VALUES
-(115, '1231262372348', NULL, '315623377889994', 'Andhika Noor Ismawan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '08123612371238', NULL, NULL, NULL, NULL, NULL, 1, 0, 51, '2024-07-12 10:53:29', '2024-07-12 10:53:29'),
-(116, '1232820390', NULL, '33112553647478', 'Muhammad Rifqi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '081237623128', NULL, NULL, NULL, NULL, NULL, 3, 0, 51, '2024-07-12 10:53:29', '2024-07-12 10:53:29'),
-(117, 'Non sint veritatis n', NULL, 'Consequat Magni vol', 'Maxime ratione magni', 'Pariatur Debitis qu', '2020-10-26', 'perempuan', 11521, 569, 24, 2, 'Omnis ratione ipsum', 'hindu', 'belum kawin', 'Assumenda est dolor', 'Duis aute a commodi', 'Officia amet facili', 'Quaerat quo commodi', 'gipe@mailinator.com', 'maximerationemagni', NULL, '/anggota/selfie/1721188607anggota.png', '/anggota/ktp/1721188607anggota.png', 2, 0, 51, '2024-07-17 10:56:47', '2024-07-17 10:56:47');
+INSERT INTO `tbl_anggota` (`id`, `no_anggota`, `nis`, `nik`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `id_kelurahan`, `id_kecamatan`, `id_kota`, `id_provinsi`, `kode_pos`, `agama`, `status_pernikahan`, `pekerjaan`, `kewarganegaraan`, `alamat`, `nomor_hp`, `email`, `username`, `password`, `selfie`, `ktp`, `jabatan`, `approval`, `id_koperasi`, `created_at`, `updated_at`) VALUES
+(115, '1231262372348', NULL, '315623377889994', 'Andhika Noor Ismawan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '08123612371238', NULL, NULL, NULL, NULL, NULL, NULL, 0, 51, '2024-07-12 10:53:29', '2024-07-12 10:53:29'),
+(116, '1232820390', NULL, '33112553647478', 'Muhammad Rifqi', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '081237623128', NULL, NULL, NULL, NULL, NULL, NULL, 0, 51, '2024-07-12 10:53:29', '2024-07-12 10:53:29'),
+(117, 'Non sint veritatis n', NULL, 'Consequat Magni vol', 'Maxime ratione magni', 'Pariatur Debitis qu', '2020-10-26', 'perempuan', 11521, 569, 24, 2, 'Omnis ratione ipsum', 'hindu', 'belum kawin', 'Assumenda est dolor', 'Duis aute a commodi', 'Officia amet facili', 'Quaerat quo commodi', 'gipe@mailinator.com', 'maximerationemagni', NULL, '/anggota/selfie/1721188607anggota.png', '/anggota/ktp/1721188607anggota.png', NULL, 0, 51, '2024-07-17 10:56:47', '2024-07-17 10:56:47'),
+(118, '1232820390', '932-502-066-123', '3603280104970004', 'ADITYA APRIANTO', 'Tangerang', '1997-04-01', 'laki-laki', 2155, 10, 1, 1, '15811', 'protestan', 'belum kawin', 'Programmer', 'Indonesia', 'Dasana Indah Blok UC 18 No. 6', '0895385984899', 'aditbest5@gmail.com', 'aditya97', 'admin123', '/anggota/selfie/1722195960anggota.png', '/anggota/ktp/1722195960anggota.png', 'anggota', 1, 71, '2024-07-29 02:15:01', '2024-07-29 02:15:01');
 
 -- --------------------------------------------------------
 
@@ -7697,7 +7698,9 @@ CREATE TABLE `tbl_koperasi` (
 
 INSERT INTO `tbl_koperasi` (`id`, `nama_koperasi`, `nis`, `no_phone`, `hp_wa`, `hp_fax`, `email_koperasi`, `url_website`, `bidang_koperasi`, `alamat`, `id_provinsi`, `id_kota`, `id_kecamatan`, `id_kelurahan`, `kode_pos`, `no_akta_pendirian`, `tanggal_akta_pendirian`, `no_akta_perubahan`, `tanggal_akta_perubahan`, `no_sk_kemenkumham`, `tanggal_sk_kemenkumham`, `no_spkum`, `tanggal_spkum`, `no_siup`, `masa_berlaku_siup`, `no_sk_domisili`, `masa_berlaku_sk_domisili`, `no_npwp`, `no_pkp`, `no_sertifikat_koperasi`, `doc_sertifikat_koperasi`, `approval`, `singkatan_koperasi`, `id_inkop`, `id_puskop`, `id_primkop`, `image_ktp_pengawas`, `image_ktp_ketua`, `image_logo`, `image_npwp`, `doc_siup`, `doc_sk_kemenkumham`, `doc_akta_perubahan`, `doc_akta_pendirian`, `doc_spkum`, `doc_sk_domisili`, `slug`, `username`, `password`, `id_tingkatan_koperasi`, `created_at`, `updated_at`) VALUES
 (51, 'Koperasi Pegangsaan', NULL, '0812621361237', '081293844429', NULL, 'aditbest5@gmail.com', NULL, 'Serba Usaha', 'Pegangsaan Timur No 36', 11, 156, 1915, 25128, '12232', '12334', '2024-07-03', '21312344', '2024-06-01', '123123443', '2024-04-02', '12312', '2024-04-04', '1231', '2024-07-01', '123123', '2024-07-02', '12312323', '2423423', '123123123', '/koperasi/sertifikat_koperasi/1720756409_dokumen.pdf', 1, 'Pegangsaan', NULL, NULL, NULL, '/koperasi/ktp_pengawas/1720756409_ktp.png', '/koperasi/ktp_ketua/1720756409_ktp.png', '/koperasi/logo/1720756409_logo.png', '/koperasi/npwp/1720756409_npwp.png', '/koperasi/siup/1720756409_dokumen.pdf', '/koperasi/sk_kemenkumham/1720756409_dokumen.pdf', '/koperasi/akta_perubahan/1720756409_dokumen.pdf', '/koperasi/akta_pendirian/1720756409_dokumen.pdf', '/koperasi/spkum/1720756409_dokumen.pdf', '/koperasi/sk_domisili/1720756409_dokumen.pdf', 'pegangsaan', 'pegangsaan', '7995331acab793e6f6a5', 3, '2024-07-12 10:53:29', '2024-07-12 10:53:29'),
-(67, 'Induk Koperasi Angkatan Laut', '932', 'Optio optio labori', 'Nobis ipsam voluptat', '+1 (208) 845-4782', 'wukyvyvyx@mailinator.com', 'https://www.haharo.co', 'Lorem aut rerum ipsu', 'Commodi officiis et', 2, 25, 522, 11268, 'Culpa exercitation p', 'Sint quia ut ut labo', '1978-07-11', 'Aspernatur at qui re', '2009-02-01', 'Exercitation in veli', '1994-09-09', 'Voluptatem Nemo et', '1991-11-06', 'Odit amet culpa rer', '2011-01-16', 'Ut lorem quis dolore', '1992-11-02', 'Quisquam a reprehend', 'Modi ipsam distincti', 'Cum amet voluptatem', '/koperasi/sertifikat_koperasi/1721899199_dokumen.pdf', 0, 'Est inventore labori', NULL, NULL, NULL, NULL, NULL, '/koperasi/logo/1721899199_logo.png', '/koperasi/npwp/1721899199_npwp.png', '/koperasi/siup/1721899199_dokumen.pdf', '/koperasi/sk_kemenkumham/1721899199_dokumen.pdf', '/koperasi/akta_perubahan/1721899199_dokumen.pdf', '/koperasi/akta_pendirian/1721899199_dokumen.pdf', '/koperasi/spkum/1721899199_dokumen.pdf', '/koperasi/sk_domisili/1721899199_dokumen.pdf', 'induk-koperasi-angkatan-laut', 'inkoppal99', 'admin123', 1, '2024-07-25 12:53:34', '2024-07-25 12:53:34');
+(67, 'Induk Koperasi Angkatan Laut', '932', 'Optio optio labori', 'Nobis ipsam voluptat', '+1 (208) 845-4782', 'wukyvyvyx@mailinator.com', 'https://www.haharo.co', 'Lorem aut rerum ipsu', 'Commodi officiis et', 2, 25, 522, 11268, 'Culpa exercitation p', 'Sint quia ut ut labo', '1978-07-11', 'Aspernatur at qui re', '2009-02-01', 'Exercitation in veli', '1994-09-09', 'Voluptatem Nemo et', '1991-11-06', 'Odit amet culpa rer', '2011-01-16', 'Ut lorem quis dolore', '1992-11-02', 'Quisquam a reprehend', 'Modi ipsam distincti', 'Cum amet voluptatem', '/koperasi/sertifikat_koperasi/1721899199_dokumen.pdf', 1, 'Est inventore labori', NULL, NULL, NULL, NULL, NULL, '/koperasi/logo/1721899199_logo.png', '/koperasi/npwp/1721899199_npwp.png', '/koperasi/siup/1721899199_dokumen.pdf', '/koperasi/sk_kemenkumham/1721899199_dokumen.pdf', '/koperasi/akta_perubahan/1721899199_dokumen.pdf', '/koperasi/akta_pendirian/1721899199_dokumen.pdf', '/koperasi/spkum/1721899199_dokumen.pdf', '/koperasi/sk_domisili/1721899199_dokumen.pdf', 'induk-koperasi-angkatan-laut', 'inkoppal99', 'admin123', 1, '2024-07-25 12:53:34', '2024-07-25 12:53:34'),
+(69, 'Koperasi Mabes TNI', '932-502', 'Exercitation aut sit', 'Est molestiae incidu', '+1 (127) 813-5783', 'coqutiwo@mailinator.com', 'https://www.vupozycy.us', 'Quos ullamco excepte', 'Sunt corporis quasi', 29, 406, 5978, 71706, 'Ad officia quos esse', 'Suscipit illo quos s', '1981-12-23', 'Id ex nostrud vero e', '1985-06-23', 'Possimus itaque vol', '2009-02-26', 'Labore rerum commodi', '2012-12-10', 'Adipisicing et volup', '1972-11-28', 'Omnis unde nihil sae', '2013-06-11', 'Eaque libero volupta', 'Perspiciatis qui do', 'Rerum culpa consequ', '/koperasi/sertifikat_koperasi/1722188538_dokumen.pdf', 1, 'mabestni', 67, NULL, NULL, NULL, NULL, '/koperasi/logo/1722188538_logo.png', '/koperasi/npwp/1722188538_npwp.png', '/koperasi/siup/1722188538_dokumen.pdf', '/koperasi/sk_kemenkumham/1722188538_dokumen.pdf', '/koperasi/akta_perubahan/1722188538_dokumen.pdf', '/koperasi/akta_pendirian/1722188538_dokumen.pdf', '/koperasi/spkum/1722188538_dokumen.pdf', '/koperasi/sk_domisili/1722188538_dokumen.pdf', NULL, 'koperasimabes19', 'admin123', 2, '2024-07-28 22:14:44', '2024-07-28 22:14:44'),
+(71, 'Koperasi Angkatan 98', '932-502-066', 'Deserunt reprehender', 'Nulla eius est in re', '+1 (355) 946-5168', 'moridono@mailinator.com', 'https://www.sesal.com', 'Do unde ut omnis inc', 'Lorem blanditiis ips', 31, 419, 6224, 72928, '15232331', 'Quis aliqua Molesti', '2007-09-07', 'Id eu ex consequatur', '2011-09-21', 'Vero aspernatur expe', '1977-08-16', 'Labore sed rerum et', '1979-02-27', 'Sequi laudantium ir', '2022-11-01', 'Omnis omnis sit fac', '2016-03-04', 'Dolorem in in qui ut', 'In exercitation ulla', 'Praesentium voluptat', '/koperasi/sertifikat_koperasi/1722191447_dokumen.pdf', 1, 'Quo quasi quisquam i', NULL, 69, NULL, NULL, NULL, '/koperasi/logo/1722191447_logo.png', '/koperasi/npwp/1722191447_npwp.png', '/koperasi/siup/1722191447_dokumen.pdf', '/koperasi/sk_kemenkumham/1722191447_dokumen.pdf', '/koperasi/akta_perubahan/1722191447_dokumen.pdf', '/koperasi/akta_pendirian/1722191447_dokumen.pdf', '/koperasi/spkum/1722191447_dokumen.pdf', '/koperasi/sk_domisili/1722191447_dokumen.pdf', NULL, 'kopang98', 'admin123', 3, '2024-07-29 01:27:09', '2024-07-29 01:27:09');
 
 -- --------------------------------------------------------
 
@@ -7893,7 +7896,7 @@ CREATE TABLE `tbl_pengajuan` (
 CREATE TABLE `tbl_pengawas` (
   `id` int(11) NOT NULL,
   `nama_pengawas` varchar(50) DEFAULT NULL,
-  `nomor_hp` int(13) DEFAULT NULL,
+  `nomor_hp` varchar(20) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `jabatan` varchar(30) DEFAULT NULL,
@@ -7906,7 +7909,9 @@ CREATE TABLE `tbl_pengawas` (
 --
 
 INSERT INTO `tbl_pengawas` (`id`, `nama_pengawas`, `nomor_hp`, `created_at`, `updated_at`, `jabatan`, `id_anggota`, `id_koperasi`) VALUES
-(1, 'Rifqi', 812381283, '2024-07-25 16:19:59', '2024-07-25 16:19:59', 'ketua', NULL, 67);
+(1, 'Rifqi', '812381283', '2024-07-25 16:19:59', '2024-07-25 16:19:59', 'ketua', NULL, 67),
+(2, 'Muhammad Rafli', '081212921200', '2024-07-29 00:42:18', '2024-07-29 00:42:18', 'ketua', NULL, 69),
+(4, 'Hamdan', '081229993004', '2024-07-29 01:30:47', '2024-07-29 01:30:47', 'ketua', NULL, 71);
 
 -- --------------------------------------------------------
 
@@ -7918,7 +7923,7 @@ CREATE TABLE `tbl_pengurus` (
   `id` int(11) NOT NULL,
   `nama_pengurus` varchar(50) DEFAULT NULL,
   `jabatan` varchar(30) DEFAULT NULL,
-  `nomor_hp` varchar(13) DEFAULT NULL,
+  `nomor_hp` varchar(20) DEFAULT NULL,
   `id_anggota` int(11) DEFAULT NULL,
   `id_koperasi` int(11) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -7932,7 +7937,11 @@ CREATE TABLE `tbl_pengurus` (
 INSERT INTO `tbl_pengurus` (`id`, `nama_pengurus`, `jabatan`, `nomor_hp`, `id_anggota`, `id_koperasi`, `created_at`, `updated_at`) VALUES
 (10, 'Yusril', 'ketua', '089630317045', NULL, 67, '2024-07-25 12:53:34', '2024-07-25 12:53:34'),
 (17, 'Sahri', 'bendahara', '081231239123', NULL, 67, '2024-07-25 16:19:59', '2024-07-25 16:19:59'),
-(18, 'Andhika', 'sekjen', '08123812832', NULL, 67, '2024-07-25 16:19:59', '2024-07-25 16:19:59');
+(18, 'Andhika', 'sekjen', '08123812832', NULL, 67, '2024-07-25 16:19:59', '2024-07-25 16:19:59'),
+(20, 'Muhamad Rifqi', 'ketua', '0895385984895', NULL, 69, '2024-07-28 22:14:44', '2024-07-28 22:14:44'),
+(22, 'Bhaskoro Aldi', 'sekjen', '08121299321239', NULL, 69, '2024-07-29 00:42:18', '2024-07-29 00:42:18'),
+(25, 'Prawang', 'ketua', '089630317044', NULL, 71, '2024-07-29 01:27:09', '2024-07-29 01:27:09'),
+(26, 'Wahyu Rizky', 'bendahara', '08123445389599', NULL, 71, '2024-07-29 01:30:47', '2024-07-29 01:30:47');
 
 -- --------------------------------------------------------
 
@@ -89430,7 +89439,6 @@ CREATE TABLE `tbl_user` (
 --
 ALTER TABLE `tbl_anggota`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `anggota_ibfk5` (`id_role`),
   ADD KEY `anggota_ibfk6` (`id_koperasi`),
   ADD KEY `anggota_ibfk_provinsi` (`id_provinsi`);
 
@@ -89615,7 +89623,7 @@ ALTER TABLE `tbl_user`
 -- AUTO_INCREMENT untuk tabel `tbl_anggota`
 --
 ALTER TABLE `tbl_anggota`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_cities`
@@ -89645,7 +89653,7 @@ ALTER TABLE `tbl_kategori_produk`
 -- AUTO_INCREMENT untuk tabel `tbl_koperasi`
 --
 ALTER TABLE `tbl_koperasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_order`
@@ -89687,13 +89695,13 @@ ALTER TABLE `tbl_pengajuan`
 -- AUTO_INCREMENT untuk tabel `tbl_pengawas`
 --
 ALTER TABLE `tbl_pengawas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_pengurus`
 --
 ALTER TABLE `tbl_pengurus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `tbl_produk`
@@ -89757,7 +89765,6 @@ ALTER TABLE `tbl_user`
 -- Ketidakleluasaan untuk tabel `tbl_anggota`
 --
 ALTER TABLE `tbl_anggota`
-  ADD CONSTRAINT `anggota_ibfk5` FOREIGN KEY (`id_role`) REFERENCES `tbl_roles` (`id`),
   ADD CONSTRAINT `anggota_ibfk6` FOREIGN KEY (`id_koperasi`) REFERENCES `tbl_koperasi` (`id`);
 
 --

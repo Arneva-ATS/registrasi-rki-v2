@@ -33,8 +33,11 @@ Route::prefix('register')->group(function () {
     Route::post("/rki/update-koperasi/{id_koperasi}", [KoperasiController::class, 'update_koperasi_rki']);
     Route::post('/anggota/insert-anggota', [AnggotaController::class, 'insert_anggota']);
     Route::post('/anggota/update-anggota/{id_anggota}', [AnggotaController::class, 'update_anggota']);
-    Route::post('/koperasi/insert-koperasi/{koperasi}/{tingkat}', [KoperasiController::class, 'insert_koperasi']);
+    Route::post('/anggota/update-insert-anggota', [AnggotaController::class, 'update_insert_anggota']);
+    Route::post('/koperasi/insert-koperasi/{id_koperasi}/{tingkat}', [KoperasiController::class, 'insert_koperasi']);
 })->name('register');
+Route::get('/koperasi/verifikasi-nis/{nis}', [KoperasiController::class, 'verifikasi_nis']);
+Route::get('/anggota/verifikasi-nis/{nis}', [AnggotaController::class, 'verifikasi_nis']);
 
 Route::prefix('wilayah')->group(function () {
     Route::get('/provinsi', [WilayahController::class, 'province']);
@@ -57,7 +60,6 @@ Route::prefix('products')->group(function () {
     Route::delete('/delete-produk/{id}', [ProductController::class, 'destroy']);
     Route::patch('/update-produk/{id}', [ProductController::class, 'update']);
     Route::patch('/add-stock/{id}', [ProductController::class, 'add_stock']);
-
 })->name('products');
 // ============ End Produk ================
 

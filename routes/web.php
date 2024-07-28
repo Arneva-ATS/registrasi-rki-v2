@@ -290,49 +290,25 @@ if (config('app.env') === 'production') {
     });
 
     // Routing anggota melalui primkopnya
-    Route::get('/anggota/primkop/{name}', function ($name) {
-        $koperasi = DB::table('tbl_koperasi')->select('nama_koperasi', 'id')->where('slug', $name)->get();
-        // return dd(is_bool($koperasi));
-        // return dd($tingkat_koperasi);
-        if ($koperasi->isEmpty()) {
-            return view('error');
-        } else {
-            return view('registrasi.registrasi-anggota', ['name' => $name, 'nama_koperasi' => $koperasi[0]->nama_koperasi, 'id_koperasi' => $koperasi[0]->id]);
-        }
+    Route::get('/pendaftaran/anggota/primkop/', function () {
+        return view('registrasi.registrasi-anggota');
     })->name('anggota.primkop');
 
     // Routing registrasi koperasi melalui RKI
     Route::get('/pendaftaran/koperasi/{slug}/{nis}', function ($slug, $nis) {
 
         $koperasi = DB::table('tbl_koperasi')->where('slug', $slug)->where('nis', $nis)->where('approval', 0)->first();
-        $pengurus = DB::table('tbl_pengurus')->where('id_koperasi',$koperasi->id)->get();
-        if(!$koperasi){
+        $pengurus = DB::table('tbl_pengurus')->where('id_koperasi', $koperasi->id)->get();
+        if (!$koperasi) {
             return view('error');
         }
-        return view('registrasi.registrasi-koperasi-rki', compact('nis', 'slug','koperasi', 'pengurus'));
+        return view('registrasi.registrasi-koperasi-rki', compact('nis', 'slug', 'koperasi', 'pengurus'));
     })->name('pendaftaran.koperasi');
 
     // Routing registrasi koperasi melalui koperasi diatasnya
-    Route::get('/koperasi/{tingkat}/{name}', function ($tingkat, $name) {
-        $koperasi = DB::table('tbl_koperasi')->select('*', 'tbl_koperasi.id as id_kop')
-            ->join('tbl_tingkat_koperasi', 'tbl_koperasi.id_tingkatan_koperasi', '=', 'tbl_tingkat_koperasi.id')
-            ->where('tbl_koperasi.slug', $name)
-            ->where('tbl_tingkat_koperasi.nama_tingkatan', $tingkat)
-            ->get();
-        // return dd($koperasi);
-        if ($koperasi->isEmpty()) {
-            return view('error');
-        } elseif ($koperasi[0]->id_tingkatan_koperasi > 2) {
-            return view('error');
-        } elseif ($koperasi[0]->id_tingkatan_koperasi < 3) {
-            $tingkatan = $koperasi[0]->id_tingkatan_koperasi + 1;
-            $tingkat_atas = DB::table('tbl_tingkat_koperasi')->where('id', $tingkatan)->get();
-            $tingkat_bawah = DB::table('tbl_tingkat_koperasi')->where('id', $koperasi[0]->id_tingkatan_koperasi)->get();
-
-            // return dd($tingkat_atas);
-            return view('registrasi.registrasi-koperasi', ['tingkat_bawah' => $tingkat_atas[0]->nama_tingkatan, "tingkat_atas" => $tingkat_bawah[0]->nama_tingkatan, 'id_koperasi' => $koperasi[0]->id_kop, 'nama_koperasi' => $koperasi[0]->nama_koperasi, 'id_tingkat' => $tingkatan]);
-        }
-    })->name('koperasi');
+    Route::get('/registrasi/koperasi/', function () {
+        return view('registrasi.registrasi-koperasi');
+    })->name('registrasi.koperasi');
 
 
     // =========================================================================================================================================================
