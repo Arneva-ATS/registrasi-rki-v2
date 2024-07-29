@@ -33,7 +33,7 @@ Route::prefix('register')->group(function () {
     Route::post("/rki/update-koperasi/{id_koperasi}", [KoperasiController::class, 'update_koperasi_rki']);
     Route::post('/anggota/insert-anggota', [AnggotaController::class, 'insert_anggota']);
     Route::post('/anggota/update-anggota/{id_anggota}', [AnggotaController::class, 'update_anggota']);
-    Route::post('/anggota/update-insert-anggota', [AnggotaController::class, 'update_insert_anggota']);
+    Route::post('/anggota/update-insert-anggota/{id_anggota}', [AnggotaController::class, 'update_insert_anggota']);
     Route::post('/koperasi/insert-koperasi/{id_koperasi}/{tingkat}', [KoperasiController::class, 'insert_koperasi']);
 })->name('register');
 Route::get('/koperasi/verifikasi-nis/{nis}', [KoperasiController::class, 'verifikasi_nis']);

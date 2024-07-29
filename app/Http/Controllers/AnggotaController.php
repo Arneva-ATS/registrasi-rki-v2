@@ -87,7 +87,8 @@ class AnggotaController extends Controller
             ], 500);
         }
     }
-    public function update_insert_anggota(Request $request)
+
+    public function update_insert_anggota(Request $request, $id_anggota)
     {
         DB::beginTransaction();
 
@@ -100,6 +101,9 @@ class AnggotaController extends Controller
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required|date',
                 'jenis_kelamin' => 'required',
+                'anggotaKeluarga' => 'required|array',
+                'pendidikanData' => 'required|array',
+                'pekerjaanData' => 'required|array',
                 'kelurahan' => 'required',
                 'kecamatan' => 'required',
                 'kota' => 'required',
@@ -156,6 +160,10 @@ class AnggotaController extends Controller
                 'alamat' => $request->alamat,
                 'nomor_hp' => $request->nomor_hp,
                 'email' => $request->email,
+                'nama_pasangan' => $request->nama_pasangan,
+                'usia_pasangan' => $request->usia_pasangan,
+                'pekerjaan_pasangan' => $request->pekerjaan_pasangan,
+                'pendidikan_pasangan' => $request->pendidikan_pasangan,
                 'selfie' => $selfieUrl,
                 'ktp' => $ktpUrl,
                 'approval' => 1,
@@ -169,6 +177,42 @@ class AnggotaController extends Controller
                     'response_message' => 'Gagal simpan data anggota!',
                 ], 400);
             }
+            $anggotaKeluarga = $request->anggotaKeluarga;
+            foreach ($anggotaKeluarga as &$keluarga) {
+                $keluarga['id_anggota'] = $id_anggota;
+            }
+            $pendidikanData = $request->pendidikanData;
+            foreach ($pendidikanData as &$pendidikan) {
+                $pendidikan['id_anggota'] = $id_anggota;
+            }
+            $pekerjaanData = $request->pekerjaanData;
+            foreach ($pekerjaanData as &$pekerjaan) {
+                $pekerjaan['id_anggota'] = $id_anggota;
+            }
+
+            $insert_anggota_keluarga = DB::table('tbl_keluarga_anggota')->insert($anggotaKeluarga);
+            if (!$insert_anggota_keluarga) {
+                return response()->json([
+                    'response_code' => "01",
+                    'response_message' => 'Gagal simpan data keluarga!',
+                ], 400);
+            }
+
+            $insert_pendidikan = DB::table('tbl_pendidikan_anggota')->insert($pendidikanData);
+            if (!$insert_pendidikan) {
+                return response()->json([
+                    'response_code' => "01",
+                    'response_message' => 'Gagal simpan data pendidikan!',
+                ], 400);
+            }
+            $insert_pekerjaan = DB::table('tbl_riwayat_pekerjaan')->insert($pekerjaanData);
+            if (!$insert_pekerjaan) {
+                return response()->json([
+                    'response_code' => "01",
+                    'response_message' => 'Gagal simpan data Pekerjaan!',
+                ], 400);
+            }
+
             DB::commit();
             return response()->json([
                 'response_code' => "00",
@@ -182,6 +226,7 @@ class AnggotaController extends Controller
             ], 500);
         }
     }
+
     public function create()
     {
         $id = Session::get('id_koperasi');
