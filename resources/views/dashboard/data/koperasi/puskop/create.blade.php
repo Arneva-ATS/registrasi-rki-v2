@@ -70,7 +70,7 @@
         let nis
         window.addEventListener("load", () => {
             id_koperasi = {{ $id }};
-            nis = {{$koperasi->nis}}
+            nis = '{{$koperasi->nis}}';
         });
 
         async function saveData() {
@@ -80,7 +80,7 @@
             const nomerKetua = document.getElementById("nomerKetua").value;
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
-            
+
             const jsondata = {
                 namaKoperasi,
                 username,
