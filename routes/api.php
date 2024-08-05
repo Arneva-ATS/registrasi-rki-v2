@@ -68,6 +68,8 @@ Route::prefix('pos')->group(function () {
     Route::post('/checkout', [PosController::class, 'insert_pos']);
     Route::delete('/cancel/{order_id}', [PosController::class, 'destroy']);
     Route::post('/payment', [PosController::class, 'insert_payment']);
+    Route::post('/xendit/callback', [PosController::class, 'handleXenditCallback']);
+
 })->name('pos');
 // ============ End POS ================
 

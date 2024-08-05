@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 use Illuminate\Support\Facades\Session;
@@ -101,9 +102,11 @@ class PosController extends Controller
                 'paid_value' => 'required',
                 'status' => 'required',
             ]);
+            $externalId = 'invoice-' . now()->timestamp;
 
             $paymentId = DB::table('tbl_payments')->insertGetId([
                 'amount_value' => $request->amount_value,
+                'external_id' => $externalId,
                 'change_value' => $request->change_value,
                 'id_koperasi' => $request->id_koperasi,
                 'id_order' => $request->id_order,
@@ -143,7 +146,59 @@ class PosController extends Controller
             return response()->json(['repsonse_code' => '01', 'response_message' => $th->getMessage()], 500);
         }
     }
+    public function handleXenditCallback(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $callbackData = $request->all();
+            Log::info('Received callback from Xendit: ' . json_encode($callbackData));
 
+            // Example: Update payment status in your database
+            $externalId = $callbackData['external_id'];
+            $status = $callbackData['status'];
+
+            // Fetch the payment record by external_id
+            $payment = DB::table('tbl_payments')->where('external_id', $externalId)->first();
+            if (!$payment) {
+                throw new \Exception('Payment record not found!');
+            }
+
+            // Update the payment record status
+            DB::table('tbl_payments')->where('external_id', $externalId)->update([
+                'status' => 'completed',
+            ]);
+
+            // Fetch order details if the payment status is completed
+            if ($status === 'PAID') {
+                $orderDetails = DB::table('tbl_order_detail')->where('id_order', $payment->id_order)->get();
+                foreach ($orderDetails as $detail) {
+                    // Update product stock
+                    $product = DB::table('tbl_produk')->where('id', $detail->id_product)->first();
+                    if ($product) {
+                        $newStock = $product->stok - $detail->quantity;
+                        if ($newStock < 0) {
+                            throw new \Exception('Stock for product ' . $product->nama_produk . ' is not sufficient!');
+                        }
+                        DB::table('tbl_produk')->where('id', $detail->id_product)->update(['stok' => $newStock]);
+                    } else {
+                        throw new \Exception('Product with ID ' . $detail->id_product . ' not found!');
+                    }
+                }
+
+                $orderUpdate = DB::table('tbl_order')->where('id', $payment->id_order)->update(['status' => 'completed']);
+                if (!$orderUpdate) {
+                    throw new \Exception('Failed to update order status');
+                }
+            }
+
+            DB::commit();
+            return response()->json(['message' => 'Callback received successfully'], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error('Error handling Xendit callback: ' . $th->getMessage());
+            return response()->json(['error' => $th->getMessage()], 500);
+        }
+    }
     public function destroy($order_id)
     {
         DB::beginTransaction();
