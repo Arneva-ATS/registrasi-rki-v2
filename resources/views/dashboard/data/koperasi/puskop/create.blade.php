@@ -71,6 +71,7 @@
         window.addEventListener("load", () => {
             id_koperasi = {{ $id }};
             nis = '{{$koperasi->nis}}';
+            console.log(nis)
         });
 
         async function saveData() {
