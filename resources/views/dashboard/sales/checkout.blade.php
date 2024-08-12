@@ -475,7 +475,7 @@
                         swal.close();
                         let url = data.invoiceUrl;
                         console.log(url);
-                        // window.location.href = url;
+                        window.location.href = url;
                     })
                     .catch((error) => {
                         swal.close();

@@ -36,6 +36,7 @@ Route::prefix('register')->group(function () {
     Route::post('/anggota/update-insert-anggota/{id_anggota}', [AnggotaController::class, 'update_insert_anggota']);
     Route::post('/koperasi/insert-koperasi/{id_koperasi}/{tingkat}', [KoperasiController::class, 'insert_koperasi']);
 })->name('register');
+
 Route::get('/koperasi/verifikasi-nis/{nis}', [KoperasiController::class, 'verifikasi_nis']);
 Route::get('/anggota/verifikasi-nis/{nis}', [AnggotaController::class, 'verifikasi_nis']);
 
