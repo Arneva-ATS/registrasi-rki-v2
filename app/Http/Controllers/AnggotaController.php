@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LinkMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +24,7 @@ class AnggotaController extends Controller
                 'nama_lengkap' => 'required',
                 'password' => 'required',
                 'confirmPassword' => 'required',
+                'email' =>'required',
                 'nis' => 'required',
                 'nomor_hp' => 'required',
                 'id_koperasi' => 'required'
@@ -52,6 +55,16 @@ class AnggotaController extends Controller
                     'response_message' => 'Gagal Tambah Anggota!',
                 ], 400);
             }
+            $details = [
+                'title' => 'Link Registrasi',
+                'content' => 'Selamat! Akun anggota anda berhasil terverifikasi',
+                'info' => 'Berikut link untuk melengkapi data anggota Anda pada tautan dibawah ini:',
+                'link' => 'https://registrasiv2.rkicoop.co.id/pendaftaran/anggota/primkop/',
+                'logo_rki' => 'https://rkicoop.co.id/assets/imgs/Logo.png',
+                'logo_background' => 'https://rkicoop.co.id/assets/imgs/pattern_3.svg',
+            ];
+            Mail::to($request->email)->send(new LinkMail($details));
+
             DB::commit();
             return response()->json([
                 'response_code' => "00",

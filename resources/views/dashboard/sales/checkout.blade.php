@@ -435,7 +435,7 @@
                     "customer": {
                         "given_names": "{{ $order->nama_customer ?? $order->nama_lengkap }}",
                         "surname": "{{ $order->nama_customer ?? $order->nama_lengkap }}",
-                        "email": "{{ $order->email }}",
+                        "email": "{{ $order->email ?? '-' }}",
                         "mobile_number": "{{ $order->no_telp ?? $order->nomor_hp }}",
                     },
                     "description": "Pembayaran dengan Xendit",
@@ -474,7 +474,8 @@
                         console.log(data)
                         swal.close();
                         let url = data.invoiceUrl;
-                        window.location.href = url;
+                        console.log(url);
+                        // window.location.href = url;
                     })
                     .catch((error) => {
                         swal.close();

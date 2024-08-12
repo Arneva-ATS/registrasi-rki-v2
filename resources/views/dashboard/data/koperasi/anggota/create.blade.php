@@ -31,6 +31,11 @@
                             placeholder="Masukan Nama Lengkap" required />
                     </div>
                     <div class="col-md-6 position-relative">
+                        <label for="email">Email Anggota</label>
+                        <input type="text" name="email" id="email" class="form-control"
+                            placeholder="Masukan Nama Lengkap" required />
+                    </div>
+                    <div class="col-md-6 position-relative">
                         <label for="username">Username</label>
                         <input type="text" class="form-control w-100" name="username" id="username"
                             placeholder="Masukan Tempat Lahir" required />
@@ -60,7 +65,7 @@
 
 @push('js')
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
-    <script>   
+    <script>
         let nis
         window.addEventListener("load", () => {
             nis = '{{$koperasi->nis}}'
@@ -73,7 +78,9 @@
             var password = document.getElementById("password").value;
             var confirmPassword = document.getElementById("confirmPassword").value;
             var nomor_hp = document.getElementById("nomor_hp").value;
-            
+            var email = document.getElementById("email").value;
+
+
             swal({
                 title: "Please wait",
                 text: "Submitting data...",
@@ -90,6 +97,7 @@
                 password: password,
                 confirmPassword: confirmPassword,
                 nomor_hp: nomor_hp,
+                email,
                 nis,
                 id_koperasi: {{ $id_koperasi }},
             };

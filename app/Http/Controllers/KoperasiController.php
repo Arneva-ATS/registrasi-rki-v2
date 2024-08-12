@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LinkMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 use Illuminate\Support\Facades\Session;
@@ -251,6 +253,7 @@ class KoperasiController extends Controller
                 'username' => 'required',
                 'nomerKetua' => 'required',
                 'namaKetua' => 'required',
+                'email' =>'required',
                 'nis' => 'required',
                 'confirmPassword' => 'required',
             ]);
@@ -280,7 +283,15 @@ class KoperasiController extends Controller
                     'nis' => $nis
                 ];
             }
-
+            $details = [
+                'title' => 'Link Registrasi',
+                'content' => 'Selamat! Akun koperasi anda berhasil terverifikasi',
+                'info' => 'Berikut link untuk melengkapi data koperasi Anda pada tautan dibawah ini:',
+                'link' => 'https://registrasiv2.rkicoop.co.id/registrasi/koperasi/',
+                'logo_rki' => 'https://rkicoop.co.id/assets/imgs/Logo.png',
+                'logo_background' => 'https://rkicoop.co.id/assets/imgs/pattern_3.svg',
+            ];
+            Mail::to($request->email)->send(new LinkMail($details));
             $koperasiId = DB::table('tbl_koperasi')->insertGetId($koperasiData);
             if (!$koperasiId) {
                 throw new \Exception('Gagal Tambah Koperasi!');

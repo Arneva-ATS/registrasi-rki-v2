@@ -44,7 +44,11 @@
                         <input type="text" class="form-control w-100" name="nomerKetua" id="nomerKetua"
                             placeholder="+628xxxxxxxxx" />
                     </div>
-
+                    <div class="col-md-6 position-relative">
+                        <label for="email" class="form-label">Email Koperasi</label>
+                        <input type="text" class="form-control w-100" name="email" id="email"
+                            placeholder="+628xxxxxxxxx" />
+                    </div>
                     <div class="col-12">
                         <button type="button" onclick="saveData()" name="process" class="btn btn-primary">
                             Submit
@@ -79,14 +83,16 @@
             const username = document.getElementById("username").value;
             const namaKetua = document.getElementById("namaKetua").value;
             const nomerKetua = document.getElementById("nomerKetua").value;
+            const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
-            
+
             const jsondata = {
                 namaKoperasi,
                 username,
                 namaKetua,
                 nomerKetua,
+                email,
                 password,
                 confirmPassword,
                 nis,
